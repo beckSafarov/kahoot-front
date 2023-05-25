@@ -3,15 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const links = [
-  {label: "School", path: "/"},
-  {label: "Work", path: "/"},
-  {label: "Home", path: "/"},
-  {label: "Study", path: "/"},
-  {label: "Academy", path: "/"},
-  {label: "Marketplace", path: "/"},
-]
-
 const Navbar = () => {
   return (
     <HStack
