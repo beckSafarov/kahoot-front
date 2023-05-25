@@ -4,10 +4,11 @@ import React from 'react'
 
 interface KahootProps {
   title: string,
-  image: string
+  image: string,
+  author?: string,
 }
 
-const KahootCard = ({title, image}:KahootProps) => {
+const KahootCard = ({title, image, author}:KahootProps) => {
   return (
     <Flex direction={'column'} boxShadow='lg' rounded='md'>
       <Box position='relative' w='full' h='full'>
@@ -24,10 +25,12 @@ const KahootCard = ({title, image}:KahootProps) => {
         <Text textAlign='left' fontSize='lg' fontWeight='600'>
           {title}
         </Text>
-        <HStack spacing={'5px'}>
-          <Avatar size='xs' name='Begzod Safarov' src='' />
-          <Text as='small'>Begzod Safarov</Text>
-        </HStack>
+        {author && (
+          <HStack spacing={'5px'}>
+            <Avatar size='xs' name={author} src='' />
+            <Text as='small'>{author}</Text>
+          </HStack>
+        )}
         <Button w='full' colorScheme='blue' size='sm'>
           Play
         </Button>
