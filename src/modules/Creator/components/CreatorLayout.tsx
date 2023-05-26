@@ -1,11 +1,11 @@
 import React from 'react'
-import HomeNavbar from './HomeNavbar'
+import Navbar from './Navbar'
 import { Box } from '@chakra-ui/react'
 
-const HomeLayout = ({children, bg}:{children:React.ReactNode, bg?:string}) => {
+const CreatorLayout = ({children, bg}:{children:React.ReactNode, bg?:string}) => {
   return (
     <>
-      <HomeNavbar/>
+      <Navbar />
       <Box bg={bg} pt='90px' px='100px' minH='100vh'>
         {children}
       </Box>
@@ -13,4 +13,4 @@ const HomeLayout = ({children, bg}:{children:React.ReactNode, bg?:string}) => {
   )
 }
 
-export default HomeLayout
+export default CreatorLayout
