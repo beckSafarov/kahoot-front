@@ -3,10 +3,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import CreateKahootModal from './CreateKahootModal'
+import { useNewKahootContext } from '@/hooks/Contexts'
 
 const Navbar = () => {
-  const [title, setTitle] = useState('')
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const {title} = useNewKahootContext()
   return (
     <>
       <HStack
@@ -30,7 +31,7 @@ const Navbar = () => {
             />
           </Link>
           <Button onClick={onOpen} variant='outline' size='lg'>
-            Enter kahoot title...
+            {title || 'Enter kahoot title...'}
           </Button>
         </HStack>
         <HStack spacing={'10px'}>
@@ -46,7 +47,7 @@ const Navbar = () => {
           </Link>
         </HStack>
       </HStack>
-      <CreateKahootModal isOpen={isOpen} onClose={onClose}/>
+      <CreateKahootModal isOpen={isOpen} onClose={onClose} />
     </>
   )
 }

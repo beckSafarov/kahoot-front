@@ -4,11 +4,19 @@ import { useFormik } from 'formik'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import PickImageModal from './PickImageModal'
-
+import { useNewKahootContext } from '@/hooks/Contexts'
+import * as Yup from 'yup'
 interface CreateKahootModalProps {
   isOpen: boolean
   onClose(): void
 }
+
+const validationSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Please enter the description'),
+  description: Yup.string()
+    .required('Please enter the description'),
+})
 
 type CreateKahootTypes = {
   title: string,
@@ -18,15 +26,17 @@ type CreateKahootTypes = {
 
 const CreateKahootModal = ({ isOpen, onClose }: CreateKahootModalProps) => {
   const [openPickImage, setOpenPickImage] = useState(false)
+  const {setData} = useNewKahootContext()
   const [coverImage, setCoverImage] = useState<string>(
     '/images/kahoot-bg-placeholder.png'
   )
 
   const handleSubmit = (values:CreateKahootTypes) => {
-    console.log({
-      ...values, 
-      coverImage
+    setData?.({
+      ...values,
+      coverImage,
     })
+    onClose()
   }
 
   const formik = useFormik({
@@ -35,7 +45,8 @@ const CreateKahootModal = ({ isOpen, onClose }: CreateKahootModalProps) => {
       description: '',
       visibility: 'public',
     },
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
+    validationSchema
     })
 
   return (
