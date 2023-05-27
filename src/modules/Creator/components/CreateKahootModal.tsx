@@ -14,22 +14,30 @@ type CreateKahootTypes = {
   title: string,
   description: string,
   visibility: string,
-  coverImage: string
 }
 
 const CreateKahootModal = ({ isOpen, onClose }: CreateKahootModalProps) => {
   const [openPickImage, setOpenPickImage] = useState(false)
+  const [coverImage, setCoverImage] = useState<string>(
+    '/images/kahoot-bg-placeholder.png'
+  )
+
+  const handleSubmit = (values:CreateKahootTypes) => {
+    console.log({
+      ...values, 
+      coverImage
+    })
+  }
+
   const formik = useFormik({
     initialValues: {
       title: '',
       description: '',
       visibility: 'public',
-      coverImage: '/images/kahoot-bg-placeholder.png'
     },
-    onSubmit: (values:CreateKahootTypes)=>{
-      console.log(values)
-    }
-  })
+    onSubmit: handleSubmit
+    })
+
   return (
     <>
       <ModalBase isOpen={isOpen} onClose={onClose} title='Kahoot Summary'>
@@ -57,7 +65,9 @@ const CreateKahootModal = ({ isOpen, onClose }: CreateKahootModalProps) => {
             <FormControl>
               <FormLabel>Visibility</FormLabel>
               <RadioGroup
-                onChange={formik.handleChange}
+                name='visibility'
+                onBlur={formik.handleBlur}
+                onClick={formik.handleChange}
                 value={formik.values.visibility}
               >
                 <Stack direction='row' spacing={10}>
@@ -72,10 +82,11 @@ const CreateKahootModal = ({ isOpen, onClose }: CreateKahootModalProps) => {
               <center>
                 <Box w='fit-content' boxShadow='md'>
                   <Image
-                    src='/images/kahoot-bg-placeholder.png'
+                    src={coverImage}
                     width={300}
                     height={300}
                     alt='placeholder'
+                    style={{borderRadius: '10px'}}
                   />
                 </Box>
                 <Box py='10px'>
@@ -102,7 +113,7 @@ const CreateKahootModal = ({ isOpen, onClose }: CreateKahootModalProps) => {
           </VStack>
         </form>
       </ModalBase>
-      <PickImageModal isOpen={openPickImage} onClose={()=>setOpenPickImage(false)} />
+      <PickImageModal onImagePicked={(image:string)=>setCoverImage(image)} isOpen={openPickImage} onClose={()=>setOpenPickImage(false)} />
     </>
   )
 }

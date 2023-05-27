@@ -49,8 +49,15 @@ const HomeNavbar = () => {
         ))}
       </HStack>
       <HStack spacing={'20px'}>
-        <Button colorScheme='blue'>+ New Kahoot</Button>
-        <Icon cursor='pointer' color='blue.500' as={BsPersonCircle} fontSize='30px' />
+        <Link href='/creator'>
+          <Button colorScheme='blue'>+ New Kahoot</Button>
+        </Link>
+        <Icon
+          cursor='pointer'
+          color='blue.500'
+          as={BsPersonCircle}
+          fontSize='30px'
+        />
       </HStack>
     </HStack>
   )
