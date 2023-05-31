@@ -1,24 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import CreatorLayout from './components/CreatorLayout'
 import { useNewKahootContext } from '@/hooks/Contexts'
-import { Box, Flex, Grid, GridItem, Input, Text, VStack } from '@chakra-ui/react'
+import { Flex} from '@chakra-ui/react'
 import SlidesSideBar from './components/SlidesSideBar'
-import Image from 'next/image'
 import SlideSection from './components/SlideSection'
-
-const colors = ['red', 'blue', 'orange', 'green']
+import SettingsSection from './components/SettingsSection'
 
 const Creator = () => {
-  const {addSlide} = useNewKahootContext()
-  const slides = [1, 2, 3]
+  const {addBasicSlide, slides} = useNewKahootContext()
+
+  useEffect(()=>{
+    if(slides.length < 1) {
+      addBasicSlide()
+    }
+  },[slides])
+
   return (
     <CreatorLayout bg='gray.100'>
-      <Flex>
+      <Flex minHeight='91vh'>
         <SlidesSideBar flex='1' />
-        <SlideSection flex='5'/>
-        <VStack flex='1.5' bg='yellow'>
-          <div>Settings here</div>
-        </VStack>
+        <SlideSection flex='5' />
+        <SettingsSection flex='1'/>
       </Flex>
     </CreatorLayout>
   )
