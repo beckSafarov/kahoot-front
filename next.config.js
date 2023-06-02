@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['thumb.tildacdn.com', 'pixabay.com']
   }
+  
 }
 
 module.exports = nextConfig

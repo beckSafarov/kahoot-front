@@ -12,6 +12,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import PickImageModal from './PickImageModal'
 import { useNewKahootContext } from '@/hooks/Contexts'
+import { useRouter } from 'next/router'
 
 type SlideOptionTypes = {
   id: string
@@ -45,6 +46,7 @@ interface SlideSectionProps {
 }
 
 const SlideSection = ({ flex }: SlideSectionProps) => {
+  const router = useRouter()
   const [pickImage, setPickImage] = useState(false)
   const {addBasicSlide, updateSlide, slides, activeSlide} = useNewKahootContext()
   const [values, setValues] = useState<SlideValueTypes>({
@@ -56,6 +58,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
   useEffect(()=>{
     initValues()
   },[slides, activeSlide])
+
 
   const initValues = ()=>{
     const currSlideData = slides.find((slide) => slide['id'] === activeSlide)
@@ -90,6 +93,10 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
   }
 
   const handleBlur = () => updateSlide(values)
+
+  const handleEnd = () => {
+    router.push('/home')
+  }
 
   return (
     <VStack
@@ -184,7 +191,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
         <Button onClick={handleAddClick} variant='outline' colorScheme='blue'>
           Add +
         </Button>
-        <Button hidden={slides.length < 2} variant='solid' colorScheme='red'>
+        <Button onClick={handleEnd} hidden={slides.length < 2} variant='solid' colorScheme='red'>
           End
         </Button>
       </Flex>

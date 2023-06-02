@@ -14,11 +14,14 @@ import { useFormik } from 'formik'
 import Image from 'next/image'
 import * as Yup from 'yup'
 import StyledLink from '../common/StyledLink'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 type SignUpTypes = {
   username: string
   email: string
   password: string
+  confirmPass: string,
 }
 type FormFieldTypes = {
   name: string
@@ -34,12 +37,13 @@ const formFields = [
   { name: 'username', type: 'text', label: 'Username' },
   { name: 'email', type: 'email', label: 'Email address' },
   { name: 'password', type: 'password', label: 'Password' },
+  { name: 'confirmPass', type: 'password', label: 'Confirm Password' },
 ]
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(6, 'Too Short')
-    .min(32, 'Too Long')
+    // .min(6, 'Too Short')
+    .max(32, 'Too Long')
     .required('Please enter your username'),
   email: Yup.string()
     .email('Please enter a valid email')
@@ -48,13 +52,33 @@ const validationSchema = Yup.object().shape({
     .min(6, 'Too Short')
     .max(32, 'Too Long!')
     .required('Please enter your password'),
+  confirmPass: Yup.string()
+    .min(6, 'Too Short')
+    .max(32, 'Too Long!')
+    .required('Please confirm your password'),
 })
 
 const SignUp = () => {
-  const handleSubmit = (values: SignUpTypes, onSubmitProps: any) => {
-    console.log(values)
-    onSubmitProps?.resetForm()
-    onSubmitProps?.setSubmitting(false)
+  const router = useRouter()
+  
+  const handleSignupRequest = async(values:SignUpTypes) => {
+    try{
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/`,
+        {
+          ...values,
+          password1: values.password,
+          password2: values.confirmPass,
+        }
+      )  
+      router.push('/auth/login')
+    }catch(error){
+      console.error(error)
+    }
+  }
+  
+  const handleSubmit = (values: SignUpTypes) => {
+    handleSignupRequest(values)
   }
 
   const formik = useFormik({
@@ -62,14 +86,16 @@ const SignUp = () => {
       username: '',
       email: '',
       password: '',
+      confirmPass: '',
     },
     onSubmit: handleSubmit,
     validationSchema: validationSchema,
   })
+  console.log(formik.errors)
   return (
     <>
       <Navbar />
-      <Box pt='100px' bg='#F2F2F2' height='100vh'>
+      <Box pt='100px' bg='#F2F2F2' minHeight='100vh'>
         <Center>
           <Box width='400px' bg='white' px='20px' py='20px' boxShadow='md'>
             <Text fontSize='30px' textAlign='center' fontWeight='700' mb='20px'>

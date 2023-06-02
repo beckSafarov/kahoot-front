@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import { createContext, useReducer } from "react";
 import { v4 } from 'uuid'
 const initialState = {
@@ -28,11 +29,10 @@ const NewKahootReducer = (state, action) => {
     case 'updateSlide':
       const slides = state.slides
       const { updates } = action.payload
-      console.log(updates)
+      const updatedOptions = JSON.parse(JSON.stringify(updates.options))
       const updatedSlides = slides.map((slide) => {
-        return slide.id === state.activeSlide ? { ...slide, ...updates } : slide
+        return slide.id === state.activeSlide ? { ...slide, ...updates, options: updatedOptions || slide.options } : slide
       })
-      console.log(updatedSlides)
       return { ...state, slides: updatedSlides }
     case 'deleteSlide':
       const filtered = state.slides.filter(slide => slide.id !== state.activeSlide)

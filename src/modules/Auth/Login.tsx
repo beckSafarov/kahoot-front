@@ -14,6 +14,8 @@ import { useFormik } from 'formik'
 import Image from 'next/image'
 import * as Yup from 'yup'
 import StyledLink from '../common/StyledLink'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 type LoginTypes = {
   email: string
@@ -45,8 +47,21 @@ const validationSchema = Yup.object().shape({
 })
 
 const Login = () => {
+  const router = useRouter()
+
+  const handleLoginRequest = async (values: LoginTypes) => {
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login/`, values)
+      const token = res.data.access_token
+      document.cookie = `token=${token}`
+      router.push('/home')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const handleSubmit = (values: LoginTypes, onSubmitProps:any) => {
-    console.log(values)
+    handleLoginRequest(values)
     onSubmitProps?.resetForm()
     onSubmitProps?.setSubmitting(false)
   }

@@ -36,6 +36,7 @@ const SettingsSection = ({
   }
 
   const handleDelete = () => {
+    if(slides.length < 2) return
     if(confirm('Are you sure?'))deleteSlide()
   }
 
@@ -68,7 +69,12 @@ const SettingsSection = ({
         </Menu>
       </Flex>
       <Box w='full'>
-        <Button onClick={handleDelete} w='full' colorScheme='red'>
+        <Button
+          isDisabled={slides.length < 2}
+          onClick={handleDelete}
+          w='full'
+          colorScheme='red'
+        >
           Delete
         </Button>
       </Box>
