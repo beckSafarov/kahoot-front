@@ -29,9 +29,8 @@ const NewKahootReducer = (state, action) => {
     case 'updateSlide':
       const slides = state.slides
       const { updates } = action.payload
-      const updatedOptions = JSON.parse(JSON.stringify(updates.options))
       const updatedSlides = slides.map((slide) => {
-        return slide.id === state.activeSlide ? { ...slide, ...updates, options: updatedOptions || slide.options } : slide
+        return slide.id === state.activeSlide ? { ...slide, ...updates} : slide
       })
       return { ...state, slides: updatedSlides }
     case 'deleteSlide':

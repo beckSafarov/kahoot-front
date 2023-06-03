@@ -9,27 +9,13 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState, useTransition } from 'react'
 import PickImageModal from './PickImageModal'
 import { useNewKahootContext } from '@/hooks/Contexts'
 import { useRouter } from 'next/router'
+import { OptionTypes, SlideOptionTypes, SlideValueTypes } from '@/modules/types/Slides'
 
-type SlideOptionTypes = {
-  id: string
-  text: string
-  isTrue: boolean
-}
 
-type SlideValueTypes={
-  title: string, 
-  image: string,
-  options: Array<SlideOptionTypes>
-}
-type OptionTypes = {
-  [id:string]: string,
-  color: string,
-  shape: string
-}
 const options = [
   { id: 'a', color: 'red', shape: 'polygon(50% 0%, 0% 100%, 100% 100%)' },
   {
@@ -49,16 +35,21 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
   const router = useRouter()
   const [pickImage, setPickImage] = useState(false)
   const {addBasicSlide, updateSlide, slides, activeSlide} = useNewKahootContext()
+  const [pending, setTransition] = useTransition()
   const [values, setValues] = useState<SlideValueTypes>({
     title: '',
     image: '',
     options: [],
+    correctOption: ''
   })
 
   useEffect(()=>{
     initValues()
   },[slides, activeSlide])
 
+  useEffect(()=>{
+    monitorCompletion()
+  },[values])
 
   const initValues = ()=>{
     const currSlideData = slides.find((slide) => slide['id'] === activeSlide)
@@ -66,7 +57,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
     return 
   }
   // console.log({slides, values})
-  const handleOptionEdit = (name:string, value:string | boolean):void => {
+  const handleOptionTextEdit = (name:string, value:string | boolean):void => {
     const [optionLetter, field] = name.split('-')
     const updatedOptions = values.options.map((opt: SlideOptionTypes) => {
       return opt.id === optionLetter ? { ...opt, [field]: value } : opt
@@ -75,28 +66,48 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
     setValues({...values, options: updatedOptions})
   }
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>):void => {
-    const {name, value, checked} = e.currentTarget
-    if(name.match(/title|image/)){
-      setValues({...values, [name]:value})
-      return 
-    }
-    handleOptionEdit(name, value || checked)
+  const handleCorrectOptionChange = (name:string) => {
+    const correctOption = name.split('-')[0]
+    const updatedValues = { ...values, correctOption}
+    setValues(updatedValues)
+    updateSlide(updatedValues)
   }
 
-  const handleAddClick = () => addBasicSlide()
+  const fieldsAreValid = useCallback(() => {
+    const hasTitle = !!values.title
+    const allOptionsFilled = values.options.every((opt) => opt.text !== '')
+    const hasRightOption = !!values.correctOption
+    return hasTitle && allOptionsFilled && hasRightOption
+  }, [values])
+
+  const monitorCompletion = () => {
+    if (!fieldsAreValid()) return
+    setValues(v=>({...v, isComplete: true}))
+  }
+
+  const handleChange = (e: React.FormEvent<HTMLInputElement>):void => {
+    const {name, value} = e.currentTarget
+    if(name.match(/title|image/)){
+      return setValues({ ...values, [name]: value })
+    }
+    if (name.match(/correctOption/g)) {
+      return handleCorrectOptionChange(name)
+    }
+    handleOptionTextEdit(name, value)
+  }
+
+  const handleAddClick = () => {
+    if(!fieldsAreValid()) return
+    updateSlide(values)
+    addBasicSlide()
+  }
 
   const handleImagePicked = (image:string) => {
-    // updateSlide(values)
     setValues({ ...values, image })
     updateSlide({...values, image})
   }
 
   const handleBlur = () => updateSlide(values)
-
-  const handleEnd = () => {
-    router.push('/home')
-  }
 
   return (
     <VStack
@@ -177,8 +188,8 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
                   px='10px'
                 >
                   <Checkbox
-                    isChecked={values?.options?.[i]?.isTrue}
-                    name={`${option.id}-isTrue`}
+                    isChecked={option.id === values.correctOption}
+                    name={`${option.id}-correctOption`}
                     onChange={handleChange}
                   />
                 </Flex>
@@ -188,11 +199,8 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
         </Grid>
       </Box>
       <Flex w='full' justifyContent='center' gap='20px'>
-        <Button onClick={handleAddClick} variant='outline' colorScheme='blue'>
+        <Button isDisabled={!fieldsAreValid()} onClick={handleAddClick} variant='outline' colorScheme='blue'>
           Add +
-        </Button>
-        <Button onClick={handleEnd} hidden={slides.length < 2} variant='solid' colorScheme='red'>
-          End
         </Button>
       </Flex>
     </VStack>

@@ -25,7 +25,7 @@ const SlidesSideBar = ({ flex }: { flex: string }) => {
             cursor='pointer'
             fontSize='14px'
           >
-            <Text fontWeight='semibold' textAlign='center' noOfLines={1}>
+            <Text fontWeight='semibold' textAlign='center' noOfLines={1} color={slide['title'] ? 'black' : 'gray.500' }>
               {slide['title'] || 'Untitled'}
             </Text>
             <Center mt='10px'>

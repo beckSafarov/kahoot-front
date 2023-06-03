@@ -1,13 +1,44 @@
 import { Button, HStack, Input, Text, useDisclosure } from '@chakra-ui/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import CreateKahootModal from './CreateKahootModal'
 import { useNewKahootContext } from '@/hooks/Contexts'
+import { SlideValueTypes } from '@/modules/types/Slides'
+import { useRouter } from 'next/router'
 
 const Navbar = () => {
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const {slides, setData} = useNewKahootContext()
   const {title} = useNewKahootContext()
+  const router = useRouter()
+  const canSave = useMemo(() => {
+    return slides.every(
+      (slide: SlideValueTypes) =>
+        slide.title &&
+        slide.options.every((opt) => opt.text) &&
+        slide.correctOption
+    )
+  }, [slides])
+
+  const handleExit = () => {
+    if(!confirm('Are you sure?')) return
+    setData({
+      title: '',
+      description: '',
+      visibility: '',
+      coverImage: '',
+      slides: [],
+      activeSlide: 0,
+    })
+    router.push('/home')
+  }
+
+  const handleSave = () => {
+    if(!canSave) return
+    console.log('saved')
+  }
+
   return (
     <>
       <HStack
@@ -35,16 +66,17 @@ const Navbar = () => {
           </Button>
         </HStack>
         <HStack spacing={'10px'}>
-          <Link href={'/home'}>
-            <Button colorScheme='gray' variant='solid'>
-              Exit
-            </Button>
-          </Link>
-          <Link href={'/auth/login'}>
-            <Button colorScheme='blackAlpha' variant='solid'>
-              Save
-            </Button>
-          </Link>
+          <Button onClick={handleExit} colorScheme='gray' variant='solid'>
+            Exit
+          </Button>
+          <Button
+            isDisabled={!canSave}
+            colorScheme='green'
+            onClick={handleSave}
+            variant='solid'
+          >
+            Save
+          </Button>
         </HStack>
       </HStack>
       <CreateKahootModal isOpen={isOpen} onClose={onClose} />

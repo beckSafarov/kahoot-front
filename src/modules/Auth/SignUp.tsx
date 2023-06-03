@@ -91,7 +91,7 @@ const SignUp = () => {
     onSubmit: handleSubmit,
     validationSchema: validationSchema,
   })
-  console.log(formik.errors)
+
   return (
     <>
       <Navbar />

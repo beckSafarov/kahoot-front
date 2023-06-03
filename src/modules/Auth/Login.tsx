@@ -53,7 +53,7 @@ const Login = () => {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login/`, values)
       const token = res.data.access_token
-      document.cookie = `token=${token}`
+      localStorage.setItem('token', res.data.access_token)
       router.push('/home')
     } catch (error) {
       console.error(error)
