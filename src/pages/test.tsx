@@ -83,7 +83,7 @@ const TestPage = () => {
       <button onClick={() => sendRequest()}>Search</button>
       <VStack>
         {images.map((image: string, i: number) => (
-          <Image src={image} height={100} width={100} alt='image' />
+          <Image key={i} src={image} height={100} width={100} alt='image' />
         ))}
       </VStack>
     </>
