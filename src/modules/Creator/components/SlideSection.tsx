@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import Image from 'next/image'
-import React, { useCallback, useEffect, useMemo, useState, useTransition } from 'react'
+import React, { useCallback, useEffect, useState, useTransition } from 'react'
 import PickImageModal from './PickImageModal'
 import { useNewKahootContext } from '@/hooks/Contexts'
 import { useRouter } from 'next/router'
@@ -42,7 +42,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
     options: [],
     correctOption: ''
   })
-
+  
   useEffect(()=>{
     initValues()
   },[slides, activeSlide])

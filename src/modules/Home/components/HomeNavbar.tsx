@@ -20,13 +20,13 @@ const HomeNavbar = () => {
       left='0'
       width='100%'
       py='10px'
-      px='100px'
+      px='50px'
       bg='white'
       justifyContent='space-between'
       boxShadow='sm'
     >
       <HStack spacing={'20px'}>
-        <Link href='/'>
+        <Link href='/home'>
           <Image
             src='/images/Kahoot-Logo.png'
             width={80}

@@ -6,7 +6,7 @@ const HomeLayout = ({children, bg}:{children:React.ReactNode, bg?:string}) => {
   return (
     <>
       <HomeNavbar/>
-      <Box bg={bg} pt='90px' px='100px' minH='100vh'>
+      <Box bg={bg} pt='90px' px='50px' minH='100vh'>
         {children}
       </Box>
     </>

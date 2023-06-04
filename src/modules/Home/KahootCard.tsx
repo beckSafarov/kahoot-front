@@ -5,18 +5,19 @@ import FullNextImage from '../common/FullNextImage'
 
 interface KahootProps {
   title: string,
-  image: string,
+  coverImage: string,
   author?: string,
 }
 
-const KahootCard = ({title, image, author}:KahootProps) => {
+const KahootCard = ({title, coverImage, author}:KahootProps) => {
   return (
-    <Flex direction={'column'} boxShadow='lg' rounded='md'>
-      <Box position='relative' w='full' h='full'>
-        <FullNextImage src={image} alt='car'/>
-      </Box>
-      <Flex direction='column' gap={'10px'} py='10px' px='10px'>
-        <Text textAlign='left' fontSize='lg' fontWeight='600'>
+    <Flex direction={'column'} boxShadow='lg' rounded='md' minHeight='250px'>
+      <Flex flex='1' position='relative' w='full' h='full' justifyContent='center'>
+        <FullNextImage src={coverImage} alt='car'/>
+        {/* <Image alt='car' src={coverImage} width={200} height={150}/> */}
+      </Flex>
+      <Flex flex='1' direction='column' gap={'10px'} py='10px' px='10px'>
+        <Text noOfLines={1} textAlign='left' fontSize='lg' fontWeight='600'>
           {title}
         </Text>
         {author && (
