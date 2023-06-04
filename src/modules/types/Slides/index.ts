@@ -6,7 +6,8 @@ export type SlideValueTypes = {
   title: string
   image: string
   options: Array<SlideOptionTypes>
-  correctOption: string
+  correctOption: string,
+  seconds?: Number
 }
 
 export type OptionTypes = {

@@ -50,14 +50,27 @@ const Navbar = () => {
     return {id, date} 
   }
 
+  const getSlideQuestions = () => {
+    return slides.map((slide:SlideValueTypes)=>({
+      ...slide, 
+      option_a: slide.options[0].text,
+      option_b: slide.options[1].text,
+      option_c: slide.options[2].text,
+      option_d: slide.options[3].text,
+      correct_option: slide.correctOption,
+      time: slide.seconds
+    }))
+  }
+
   const saveToDB = async()=>{
     setIsLoading(true)
     try{
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/games/`, {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/games/all`, {
         title,
         description,
         cover_image: coverImage,
-        type: visibility
+        type: visibility,
+        questions: getSlideQuestions()
       }, {
         headers: {
           'Authorization':`Bearer ${getToken()}`
