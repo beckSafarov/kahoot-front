@@ -104,7 +104,7 @@ const Login = () => {
                 Submit
               </Button>
               <Text textAlign='center' size='sm' color='#808080'>
-                Don't have an account yet?
+                Dont have an account yet?
                 <StyledLink as='span' href='/auth/signup'> Sign up</StyledLink>
               </Text>
               <hr />

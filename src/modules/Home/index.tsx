@@ -10,9 +10,6 @@ const Home = () => {
   const { push } = useRouter()
   const { setData, kahoots, userInfo} = useUserContext()
 
-  
-
-
   const initUserData = (data:UserTypes) => {
     setData({
       userInfo: {
@@ -49,7 +46,7 @@ const Home = () => {
         ;(async () => await getUserInfo())()
       }
     }
-  }, [userInfo.id, getUserInfo, push])
+  }, [userInfo.id])
 
   return <Dashboard data={kahoots} title='My Kahoots 🎯' />
 }

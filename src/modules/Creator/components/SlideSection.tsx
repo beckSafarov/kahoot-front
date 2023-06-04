@@ -51,7 +51,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
 
   useEffect(()=>{
     initValues()
-  },[slides, activeSlide, initValues])
+  },[slides, activeSlide])
 
   const fieldsAreValid = useCallback(() => {
     const hasTitle = !!values.title
@@ -67,7 +67,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
 
   useEffect(()=>{
     monitorCompletion()
-  },[values, monitorCompletion])
+  },[values])
 
   
   // console.log({slides, values})
