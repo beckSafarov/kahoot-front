@@ -42,20 +42,34 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
     options: [],
     correctOption: ''
   })
-  
+
+  const initValues = () => {
+    const currSlideData = slides.find((slide) => slide['id'] === activeSlide)
+    if (currSlideData) setValues(currSlideData)
+    return
+  }
+
   useEffect(()=>{
     initValues()
-  },[slides, activeSlide])
+  },[slides, activeSlide, initValues])
+
+  const fieldsAreValid = useCallback(() => {
+    const hasTitle = !!values.title
+    const allOptionsFilled = values.options.every((opt) => opt.text !== '')
+    const hasRightOption = !!values.correctOption
+    return hasTitle && allOptionsFilled && hasRightOption
+  }, [values])
+
+  const monitorCompletion = () => {
+    if (!fieldsAreValid()) return
+    setValues((v) => ({ ...v, isComplete: true }))
+  }
 
   useEffect(()=>{
     monitorCompletion()
-  },[values])
+  },[values, monitorCompletion])
 
-  const initValues = ()=>{
-    const currSlideData = slides.find((slide) => slide['id'] === activeSlide)
-    if(currSlideData) setValues(currSlideData)
-    return 
-  }
+  
   // console.log({slides, values})
   const handleOptionTextEdit = (name:string, value:string | boolean):void => {
     const [optionLetter, field] = name.split('-')
@@ -73,17 +87,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
     updateSlide(updatedValues)
   }
 
-  const fieldsAreValid = useCallback(() => {
-    const hasTitle = !!values.title
-    const allOptionsFilled = values.options.every((opt) => opt.text !== '')
-    const hasRightOption = !!values.correctOption
-    return hasTitle && allOptionsFilled && hasRightOption
-  }, [values])
-
-  const monitorCompletion = () => {
-    if (!fieldsAreValid()) return
-    setValues(v=>({...v, isComplete: true}))
-  }
+  
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>):void => {
     const {name, value} = e.currentTarget

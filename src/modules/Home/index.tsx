@@ -9,17 +9,8 @@ import { getToken } from '@/utils'
 const Home = () => {
   const { push } = useRouter()
   const { setData, kahoots, userInfo} = useUserContext()
-  console.log(kahoots)
-  useEffect(() => {
-    const token = getToken()
-    if (!token) {
-      push('/login')
-    } else {
-      if(!userInfo.id){
-        (async () => await getUserInfo())()
-      }
-    }
-  }, [userInfo.id])
+
+  
 
 
   const initUserData = (data:UserTypes) => {
@@ -49,6 +40,17 @@ const Home = () => {
     }
   }
   
+  useEffect(() => {
+    const token = getToken()
+    if (!token) {
+      push('/login')
+    } else {
+      if (!userInfo.id) {
+        ;(async () => await getUserInfo())()
+      }
+    }
+  }, [userInfo.id, getUserInfo, push])
+
   return <Dashboard data={kahoots} title='My Kahoots 🎯' />
 }
 
