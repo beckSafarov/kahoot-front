@@ -16,3 +16,12 @@ export type GameTypes = {
   title: string,
   type: 'private'
 }
+
+export type KahootTypes = {
+  title: string,
+  id: number,
+  coverImage: string, 
+  cover_image: string, 
+  type: 'public' | 'private',
+  created_at: string
+}

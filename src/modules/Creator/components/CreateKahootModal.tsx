@@ -13,7 +13,7 @@ interface CreateKahootModalProps {
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
-    .required('Please enter the description'),
+    .required('Please enter the title'),
   description: Yup.string()
     .required('Please enter the description'),
 })

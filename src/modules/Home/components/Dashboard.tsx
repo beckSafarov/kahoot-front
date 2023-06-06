@@ -5,15 +5,11 @@ import { AbsoluteCenter, Box, Button, Flex, Grid, GridItem, Text, VStack } from 
 import { useUserContext } from '@/hooks/Contexts'
 import Link from 'next/link'
 import FullPageSpinner from '@/modules/common/FullPageSpinner'
+import { KahootTypes } from '@/modules/types/Home'
 
-type DashboardDataTypes = {
-  title: string,
-  coverImage: string,
-  author?: string
-}
 
 interface DashboardProps {
-  data: Array<DashboardDataTypes>,
+  data: Array<KahootTypes>,
   title: string
 }
 
@@ -23,7 +19,7 @@ const Dashboard = ({data, title}:DashboardProps) => {
     if(!userInfo.firstName) return '⛳️'
     return `${userInfo.firstName} ${userInfo.lastName}`
   }
-
+  console.log(data)
   return (
     <HomeLayout bg='gray.100'>
       <Flex gap='20px'>
@@ -99,7 +95,7 @@ const Dashboard = ({data, title}:DashboardProps) => {
                 templateColumns='repeat(4, 1fr)'
                 gap={6}
               >
-                {data.map((kahoot, i: number) => (
+                {data.map((kahoot:KahootTypes, i: number) => (
                   <GridItem key={i} w='100%'>
                     <KahootCard {...kahoot} key={i} />
                   </GridItem>
