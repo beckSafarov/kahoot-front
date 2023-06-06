@@ -4,7 +4,6 @@ import KahootCard from '../KahootCard'
 import { AbsoluteCenter, Box, Button, Flex, Grid, GridItem, Text, VStack } from '@chakra-ui/react'
 import { useUserContext } from '@/hooks/Contexts'
 import Link from 'next/link'
-import FullPageSpinner from '@/modules/common/FullPageSpinner'
 import { KahootTypes } from '@/modules/types/Home'
 
 

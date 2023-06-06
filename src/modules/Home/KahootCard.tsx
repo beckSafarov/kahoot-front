@@ -1,5 +1,4 @@
-import { Avatar, Box, Button, Flex, Text, HStack } from '@chakra-ui/react'
-import Image from 'next/image'
+import { Avatar, Button, Flex, Text, HStack } from '@chakra-ui/react'
 import React from 'react'
 import FullNextImage from '../common/FullNextImage'
 import Link from 'next/link'

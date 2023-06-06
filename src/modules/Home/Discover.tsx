@@ -2,20 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Dashboard from './components/Dashboard'
 import axios from 'axios'
 import { getToken } from '@/utils'
-// import { GameTypes } from '@/types/Home'
-const allKahoots = [
-  {id:1, title: 'Car Logos', image: '/images/car.webp', author: 'Begzod Safarov', coverImage: '', },
-  {id: 2, title: 'Cool Cars', image: '/images/car.webp', author: 'John Doe', coverImage: '' },
-]
-
-// type KahootType
+import { KahootTypes } from '../types/Home'
 
 const Discover = () => {
-  // const [allKahoots, setAllKahoots] = useState<any>(null)
+  const [allKahoots, setAllKahoots] = useState<[KahootTypes] | []>([])
   
-  useEffect(()=>{
-    getAllKahoots()
-  }, [])
+  useEffect(() => {
+    if (allKahoots.length < 1) getAllKahoots()
+  }, [allKahoots.length])
 
   const getAllKahoots = async() => {
     try{
@@ -24,9 +18,14 @@ const Discover = () => {
           'Authorization':`Bearer ${getToken()}`
         }
       })
-      // setAllKahoots(data.map((game:GameTypes)=>({
-      //   ...game, id: 10
-      // })))
+      setAllKahoots(
+        data
+          .filter((game: KahootTypes) => game.cover_image.match(/http/i))
+          .map((game: KahootTypes) => ({
+            ...game,
+            coverImage: game.cover_image,
+          }))
+      )
     }catch(error){
       console.error(error)
     }
