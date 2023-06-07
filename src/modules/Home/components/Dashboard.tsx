@@ -14,11 +14,6 @@ interface DashboardProps {
 
 const Dashboard = ({data, title}:DashboardProps) => {
   const {userInfo, kahoots} = useUserContext()
-  const getName = () => {
-    if(!userInfo.firstName) return '⛳️'
-    return `${userInfo.firstName} ${userInfo.lastName}`
-  }
-  console.log(data)
   return (
     <HomeLayout bg='gray.100'>
       <Flex gap='20px'>
@@ -37,12 +32,10 @@ const Dashboard = ({data, title}:DashboardProps) => {
           </Text>
           <Flex>
             <VStack flex='1' textAlign='left' alignItems='flex-start'>
-              <Text fontWeight='bold'>Name:</Text>
               <Text fontWeight='bold'>Email:</Text>
               <Text fontWeight='bold'>Kahoots:</Text>
             </VStack>
             <VStack flex='2' alignItems='flex-start' pl='5px'>
-              <Text>{getName()}</Text>
               <Text>{userInfo.email}</Text>
               <Text>{kahoots.length}</Text>
             </VStack>

@@ -18,7 +18,6 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 
 type SignUpTypes = {
-  username: string
   email: string
   password: string
   confirmPass: string,
@@ -34,17 +33,12 @@ const authOptions = [
 ]
 
 const formFields = [
-  { name: 'username', type: 'text', label: 'Username' },
   { name: 'email', type: 'email', label: 'Email address' },
   { name: 'password', type: 'password', label: 'Password' },
   { name: 'confirmPass', type: 'password', label: 'Confirm Password' },
 ]
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    // .min(6, 'Too Short')
-    .max(32, 'Too Long')
-    .required('Please enter your username'),
   email: Yup.string()
     .email('Please enter a valid email')
     .required('Please enter your email'),
@@ -83,7 +77,6 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: '',
       email: '',
       password: '',
       confirmPass: '',
