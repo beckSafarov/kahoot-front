@@ -13,7 +13,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
 
 // export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-//   console.log('api request')
 //   // const resFromBack = await axios.post('http://164.90.213.182/users/', req.body)
 //   res.status(200).json({ data: 'My data' })
 // }

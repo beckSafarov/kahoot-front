@@ -2,6 +2,7 @@ import { Avatar, Button, Flex, Text, HStack } from '@chakra-ui/react'
 import React from 'react'
 import FullNextImage from '../common/FullNextImage'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface KahootProps {
   id: number,
@@ -20,8 +21,7 @@ const KahootCard = ({id, title, coverImage, author}:KahootProps) => {
         h='full'
         justifyContent='center'
       >
-        <FullNextImage src={coverImage} alt='car' />
-        {/* <Image alt='car' src={coverImage} width={200} height={150}/> */}
+        <Image alt='car' src={coverImage} width={200} height={150}/>
       </Flex>
       <Flex flex='1' direction='column' gap={'10px'} py='10px' px='10px'>
         <Text noOfLines={1} textAlign='left' fontSize='lg' fontWeight='600'>

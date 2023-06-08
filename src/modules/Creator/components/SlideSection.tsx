@@ -32,10 +32,8 @@ interface SlideSectionProps {
 }
 
 const SlideSection = ({ flex }: SlideSectionProps) => {
-  const router = useRouter()
   const [pickImage, setPickImage] = useState(false)
   const {addBasicSlide, updateSlide, slides, activeSlide} = useNewKahootContext()
-  const [pending, setTransition] = useTransition()
   const [values, setValues] = useState<SlideValueTypes>({
     title: '',
     image: '',
@@ -70,13 +68,11 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
   },[values])
 
   
-  // console.log({slides, values})
   const handleOptionTextEdit = (name:string, value:string | boolean):void => {
     const [optionLetter, field] = name.split('-')
     const updatedOptions = values.options.map((opt: SlideOptionTypes) => {
       return opt.id === optionLetter ? { ...opt, [field]: value } : opt
     })
-    console.log(updatedOptions)
     setValues({...values, options: updatedOptions})
   }
 
@@ -86,8 +82,6 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
     setValues(updatedValues)
     updateSlide(updatedValues)
   }
-
-  
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>):void => {
     const {name, value} = e.currentTarget
