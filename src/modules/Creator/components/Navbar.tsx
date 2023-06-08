@@ -6,7 +6,6 @@ import CreateKahootModal from './CreateKahootModal'
 import { useNewKahootContext, useUserContext } from '@/hooks/Contexts'
 import { SlideValueTypes } from '@/modules/types/Slides'
 import { useRouter } from 'next/router'
-import { v4 as uuidv4 } from 'uuid'
 import FullPageSpinner from '@/modules/common/FullPageSpinner'
 import axios from 'axios'
 import { getToken } from '@/utils'
@@ -44,12 +43,6 @@ const Navbar = () => {
     router.push('/home')
   }
 
-  const getNewKahootData = () => {
-    const id = uuidv4()
-    const date = new Date()
-    return {id, date} 
-  }
-
   const getSlideQuestions = () => {
     return slides.map((slide:SlideValueTypes)=>({
       ...slide, 
@@ -65,7 +58,7 @@ const Navbar = () => {
   const saveToDB = async()=>{
     setIsLoading(true)
     try{
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/games/all`, {
+      const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/games/all`, {
         title,
         description,
         cover_image: coverImage,
@@ -77,17 +70,21 @@ const Navbar = () => {
         }
       })
       setIsLoading(false)
-      console.log(res)
+      return data.id
     }catch(error){
       setIsLoading(false)
       console.error(error)
     }
   }
 
-  const handleSave = () => {
+  const handleSave = async() => {
     if (!canSave()) return
-    addKahoot({ title, coverImage, visibility, ...getNewKahootData() })
-    saveToDB()
+    try{
+      const id = await saveToDB()
+      addKahoot({ id, title, coverImage, visibility, date: new Date() })
+    }catch(error){
+      console.error(error)
+    }
   }
 
   return (
