@@ -25,9 +25,11 @@ const Navbar = () => {
             alt='logo'
           />
         </Link>
-        <Button colorScheme='blue'>News</Button>
       </HStack>
       <HStack spacing={'20px'}>
+        <Link href='/join'>
+          <Button colorScheme='blue'>Play</Button>
+        </Link>
         <Link href={'/auth/signup'}>
           <Text color='black' variant='outline' fontWeight={'700'}>
             Sign up

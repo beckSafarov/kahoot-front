@@ -2,11 +2,19 @@ import { Box, Spinner, VStack } from '@chakra-ui/react'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 import Image from 'next/image'
+import { difference, union, unionBy } from 'lodash'
+
 
 
 const TestPage = () => {
   const [images, setImages] = useState([])
-
+  const arr1 = [{name: "Begzod"}, {name: "Sherzod"}]
+  const arr2 = [{name: "Toby"}, {name: "Sherzod"}]
+  const arr3 = [1, 2, 3]
+  const arr4 = [2, 3, 4]
+  // console.log(difference(arr1, arr2))
+  // console.log(difference(arr3, arr4))
+  console.log(unionBy(arr1, arr2, 'name'))
   useEffect(() => {}, [])
   const sendRequest = async () => {
     const res = await axios.post('http://164.90.213.182/login/', {

@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import { Box, Button, HStack, Stack, Text} from '@chakra-ui/react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Landing = () => {
   return (
@@ -17,7 +18,6 @@ const Landing = () => {
       >
         <HStack pl='100px' transform={'translate(0, 30%)'}>
           <Box
-            // maxWidth='50%'
             flex='1'
             display='flex'
             flexDirection='column'
@@ -27,9 +27,11 @@ const Landing = () => {
               More productive and engaging meetings for your professional
               audience with Kahoot! 360
             </Text>
-            <Button maxWidth='180px' colorScheme='blue' fontSize='20px'>
-              Play with us
-            </Button>
+            <Link href='/join'>
+              <Button maxWidth='180px' colorScheme='blue' fontSize='20px'>
+                Play with us
+              </Button>
+            </Link>
           </Box>
           <Stack flex='1' justifyContent='center' alignItems='center'>
             <Image
