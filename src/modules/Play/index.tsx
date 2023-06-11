@@ -126,7 +126,7 @@ const Play = () => {
               gap='30px'
             >
               {gamers.map((gamer: GamerTypes, i: number) => (
-                <VStack rounded='md' minWidth='100px' spacing={1}>
+                <VStack key={i} rounded='md' minWidth='100px' spacing={1}>
                   <Avatar name={gamer.username} src={gamer.image} />
                   <Text noOfLines={1} fontWeight='semibold'>
                     {gamer.username}
