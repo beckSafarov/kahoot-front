@@ -198,7 +198,7 @@ const SlideSection = ({ flex }: SlideSectionProps) => {
       </Box>
       <Flex w='full' justifyContent='center' gap='20px'>
         <Button isDisabled={!fieldsAreValid()} onClick={handleAddClick} variant='outline' colorScheme='blue'>
-          Add +
+          Add Slide +
         </Button>
       </Flex>
     </VStack>

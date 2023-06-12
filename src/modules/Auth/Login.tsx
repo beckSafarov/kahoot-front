@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../Landing/components/Navbar'
 import {
   Box,
@@ -16,6 +16,7 @@ import * as Yup from 'yup'
 import StyledLink from '../common/StyledLink'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import FullPageSpinner from '../common/FullPageSpinner'
 
 type LoginTypes = {
   email: string
@@ -48,14 +49,18 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const router = useRouter()
-
+  const [isLoading, setIsLoading] = useState(false)
+  
   const handleLoginRequest = async (values: LoginTypes) => {
+    setIsLoading(true)
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login/`, values)
       const token = res.data.access_token
-      localStorage.setItem('token', res.data.access_token)
+      setIsLoading(false)
+      localStorage.setItem('token', token)
       router.push('/home')
     } catch (error) {
+      setIsLoading(false)
       console.error(error)
     }
   }
@@ -74,9 +79,11 @@ const Login = () => {
     onSubmit: handleSubmit,
     validationSchema: validationSchema
   })
+  
   return (
     <>
       <Navbar />
+      <FullPageSpinner show={isLoading}/>
       <Box pt='100px' bg='#F2F2F2' height='100vh'>
         <Center>
           <Box width='400px' bg='white' px='20px' py='20px' boxShadow='md'>

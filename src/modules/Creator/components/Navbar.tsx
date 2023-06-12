@@ -1,4 +1,4 @@
-import { Button, HStack, useDisclosure } from '@chakra-ui/react'
+import { Button, HStack, useDisclosure, useToast } from '@chakra-ui/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
@@ -15,7 +15,19 @@ const Navbar = () => {
   const {slides, setData, title, description, visibility, coverImage} = useNewKahootContext()
   const [isLoading, setIsLoading] = useState(false)
   const {addKahoot} = useUserContext()
+  const toast = useToast()
   const router = useRouter()
+
+  const throwError = (msg:string):void => {
+    toast({
+      duration: 6000,
+      isClosable: true,
+      status: 'error',
+      title: 'Error in filling the form',
+      description: msg,
+      position: 'bottom-right'
+    })
+  }
 
   const canSave = useCallback(() => {
     const isTitleSet = !!title
@@ -25,8 +37,8 @@ const Navbar = () => {
         !slide.options.find((opt) => opt.text === '') &&
         slide.correctOption
     )
-    if(!isTitleSet) console.error('Please set a title for the kahoot')
-    if(!allSlideFieldsFilled) console.error('Please fill all the fields in the kahoots')
+    if(!isTitleSet) throwError('Please set a title for the kahoot')
+    if(!allSlideFieldsFilled) throwError('Please fill all the fields in the kahoots')
     return isTitleSet && allSlideFieldsFilled
   }, [slides, title])
 
@@ -70,6 +82,12 @@ const Navbar = () => {
         }
       })
       setIsLoading(false)
+      toast({
+        duration: 4000,
+        title: "Saved Successfully",
+        description: "You can now exit the creator mode",
+        status: 'success'
+      })
       return data.id
     }catch(error){
       setIsLoading(false)
